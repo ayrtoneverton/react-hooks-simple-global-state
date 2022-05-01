@@ -1,15 +1,37 @@
 {
   "name": "react-hooks-simple-global-state",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Simple global state for React with Hooks, which just depends on React's useEffect and useState.",
+	"author": {
+		"name": "Ayrton Everton",
+		"email": "ayrtoneverton@gmail.com",
+		"url": "https://github.com/ayrtoneverton"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ayrtoneverton/react-hooks-simple-global-state.git"
+	},
+	"bugs": {
+		"url": "https://github.com/ayrtoneverton/react-hooks-simple-global-state/issues",
+		"email": "ayrtoneverton@gmail.com"
+	},
+	"homepage": "https://github.com/ayrtoneverton/react-hooks-simple-global-state#readme",
+  "keywords": [
+    "react",
+    "hooks",
+    "typescript",
+    "state-management",
+    "state",
+    "states",
+    "functional-components",
+    "react-hooks",
+    "hooks-api-react"
+  ],
   "scripts": {
     "build": "npx tsc",
     "lint": "eslint . --ext .ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "@types/react": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
@@ -31,6 +53,7 @@
     "node": "^16.14.2",
     "npm": "^8.6.0"
   },
+  "main": "index.js",
   "files": [
     "LICENSE",
     "README.md",

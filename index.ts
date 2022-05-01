@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 type Value<T> = T | undefined;
 
-type NewValue<T> = Value<T> | ((oldValue: Value<T>) => Value<T>);
+type NewValueOrFunc<T> = Value<T> | ((oldValue: Value<T>) => Value<T>);
 
-type FuncSetValue<T> = (newValue: NewValue<T>) => void;
+type FuncSetValue<T> = (newValue: NewValueOrFunc<T>) => void;
 
 type FuncStateListener = (f: ((v: boolean) => boolean)) => void;
 
@@ -20,8 +20,6 @@ interface GlobalState {
 
 const globalState: GlobalState = {};
 
-export default globalState;
-
 const funcToggleValue = (v: boolean) => !v;
 
 export const useGlobalState = <T>(
@@ -36,7 +34,7 @@ export const useGlobalState = <T>(
     state = {
       value: initValue,
       statesListening: new Set<FuncStateListener>(),
-      set(newValue: NewValue<T>): void {
+      set(newValue: NewValueOrFunc<T>): void {
         const oldValue = state.value;
         state.value = newValue instanceof Function ? newValue(oldValue) : newValue;
 
@@ -58,3 +56,5 @@ export const useGlobalState = <T>(
 
   return [state.value, state.set];
 };
+
+export default useGlobalState;
