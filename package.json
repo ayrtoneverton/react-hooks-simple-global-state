@@ -49,10 +49,6 @@
   "peerDependencies": {
     "react": ">=16.8.0"
   },
-  "engines": {
-    "node": "^16.14.2",
-    "npm": "^8.6.0"
-  },
   "main": "index.js",
   "files": [
     "LICENSE",
