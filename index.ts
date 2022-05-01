@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 type Value<T> = T | undefined;
 
-type NewValueOrFunc<T> = Value<T> | ((oldValue: Value<T>) => Value<T>);
+type ValueOrFunc<T> = Value<T> | ((currentValue: Value<T>) => Value<T>);
 
-type FuncSetValue<T> = (newValue: NewValueOrFunc<T>) => void;
+type FuncSetValue<T> = (newValueOrFunc: ValueOrFunc<T>) => void;
 
 type FuncStateListener = (f: ((v: boolean) => boolean)) => void;
 
@@ -34,7 +34,7 @@ export const useGlobalState = <T>(
     state = {
       value: initValue,
       statesListening: new Set<FuncStateListener>(),
-      set(newValue: NewValueOrFunc<T>): void {
+      set(newValue: ValueOrFunc<T>): void {
         const oldValue = state.value;
         state.value = newValue instanceof Function ? newValue(oldValue) : newValue;
 

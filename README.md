@@ -4,6 +4,8 @@ Simple global state for React with Hooks, which just depends on React's `useEffe
 
 The idea here is simply to create a kind of `useState` that shares the information between all the different components that use the same `stateName`. For this, only the state and lifecycle control of React components with Hooks, associated with the Observer pattern, is used to synchronize the update of all independent states.
 
+NOTE: If you have any difficulty, problem or even suggestion, please let me know [here](https://github.com/ayrtoneverton/react-hooks-simple-global-state/issues) or [here](https://github.com/ayrtoneverton/react-hooks-simple-global-state/discussions).
+
 ## Interface
 
 ```ts
@@ -28,9 +30,9 @@ const TabNavigation = () => {
 
   return (
     <>
-      <button onClick={() => setActiveTab(activeTab - 1)} type="button">Previous tab</button>
+      <button onClick={() => setActiveTab(activeTab - 1)}>Previous tab</button>
       {activeTab}
-      <button onClick={() => setActiveTab(activeTab + 1)} type="button">Next tab</button>
+      <button onClick={() => setActiveTab((currentActiveTab) => currentActiveTab + 1)}>Next tab</button>
     </>
   );
 };
