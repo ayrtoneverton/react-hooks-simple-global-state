@@ -1,6 +1,6 @@
 {
   "name": "react-hooks-simple-global-state",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple global state for React with Hooks, which just depends on React's useEffect and useState.",
 	"author": {
 		"name": "Ayrton Everton",
