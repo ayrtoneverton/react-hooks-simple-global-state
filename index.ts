@@ -35,11 +35,12 @@ export const useGlobalState = <T>(
       value: initValue,
       statesListening: new Set<FuncStateListener>(),
       set(newValue: ValueOrFunc<T>): void {
+        // I'm not sending the value directly to each state as this generates unnecessary rendering.
         const oldValue = state.value;
         state.value = newValue instanceof Function ? newValue(oldValue) : newValue;
 
         if (state.value !== oldValue) {
-          state.statesListening.forEach((f) => f(funcToggleValue));
+          state.statesListening.forEach((setState) => setState(funcToggleValue));
         }
       },
     };

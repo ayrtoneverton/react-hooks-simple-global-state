@@ -5,6 +5,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "strict": true,
+    "removeComments": true
   },
   "include": ["index.ts"], 
   "exclude": ["node_modules"]

@@ -6,6 +6,16 @@ The idea here is simply to create a kind of `useState` that shares the informati
 
 NOTE: If you have any difficulty, problem or even suggestion, please let me know [here](https://github.com/ayrtoneverton/react-hooks-simple-global-state/issues) or [here](https://github.com/ayrtoneverton/react-hooks-simple-global-state/discussions).
 
+## Install
+
+```console
+npm install react-hooks-simple-global-state
+```
+or
+```console
+yarn add react-hooks-simple-global-state
+```
+
 ## Interface
 
 ```ts
