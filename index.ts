@@ -47,13 +47,13 @@ export const useGlobalState = <T>(
     globalState[stateName] = state;
   }
 
-  if (listening) {
-    state.statesListening.add(setToggleState);
-  }
+  if (listening) state.statesListening.add(setToggleState);
 
-  useEffect(() => () => {
-    state.statesListening.delete(setToggleState);
-  }, [state.statesListening]);
+  useEffect(() => {
+    if (listening) state.statesListening.add(setToggleState);
+
+    return () => { state.statesListening.delete(setToggleState); };
+  }, [state.statesListening, listening]);
 
   return [state.value, state.set];
 };

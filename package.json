@@ -1,6 +1,6 @@
 {
   "name": "react-hooks-simple-global-state",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple global state for React with Hooks, which just depends on React's useEffect and useState.",
 	"author": {
 		"name": "Ayrton Everton",
@@ -30,7 +30,8 @@
   ],
   "scripts": {
     "build": "npx tsc",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "publish": "npm run build && npm publish"
   },
   "devDependencies": {
     "@types/react": "^18.0.6",
