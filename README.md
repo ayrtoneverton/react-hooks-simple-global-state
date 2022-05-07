@@ -75,3 +75,55 @@ const TabNavigation = ({ initTab }) => {
   // ...
 };
 ```
+
+You may also need to work with asynchronous information, for example requests to an API:
+```jsx
+// ------ In a file:
+import React, { useEffect } from 'react';
+import useGlobalState from 'react-hooks-simple-global-state';
+
+const initUserData = {
+  loading: true,
+  user: null,
+  error: null,
+  refetch: () => undefined
+};
+
+const useUser = () => {
+  const [userData, setUserData] = useGlobalState('userData', initUserData);
+
+  useEffect(() => {
+    if (userData.initialized) return;
+    userData.initialized = true;
+
+    const newUserData = {
+      ...initUserData,
+      loading: false,
+      refetch: () => setUserData({ ...initUserData, initialized: false })
+    };
+    fetch('https://.../users/1')
+      .then((response) => response.json())
+      .then((user) => setUserData({ ...newUserData, user }))
+      .catch((error) => setUserData({ ...newUserData, error }));
+  }, [userData.initialized]);
+
+  return userData;
+};
+
+// ------ In any other file:
+const MyComponent = () => {
+  const {
+    user, loading, error, refetch
+  } = useUser();
+
+  if (loading) return 'Loading...';
+  if (error) return 'Error :(';
+
+  return (
+    <>
+      {`Name: ${user.name} `}
+      <button onClick={refetch}>reload</button>
+    </>
+  );
+};
+```
