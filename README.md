@@ -19,7 +19,11 @@ yarn add react-hooks-simple-global-state
 ## Interface
 
 ```ts
-useGlobalState = (stateName: string, initValue?: Value, listening?: boolean = true) => [Value, FuncSetValue];
+const useGlobalState = <T>(
+  stateName: string,
+  initValue?: T,
+  listening?: boolean = true
+) => [currentValue: T, setValue: FuncSetValue<T>];
 ```
 
 Note that the structure is very similar to React's `useState`, but here we need to inform the `stateName` so we can distinguish which global state we want to use.
@@ -27,6 +31,18 @@ Note that the structure is very similar to React's `useState`, but here we need 
 One important thing that can be noticed about `initValue`, is that it can have different values in each use of `useGlobalState`, but only one of them will actually be used, and that will be the one executed first during the rendering of React, that is, it follows the order of the component tree. But you don't have to worry about that, as there are ways to make it even easier, with the following examples.
 
 The `listening` parameter can be set to `false` when you don't want to receive state updates. This can be useful when you just want to access the information, for example when you just need to access the `FuncSetValue` function, this prevents the current component from being updated unnecessarily.
+
+```ts
+const useAsyncGlobalState = <T>(
+  stateName: string,
+  funcLoadAsyncData?: () => Promise<T>
+) => AsyncData<T> {
+  loading: boolean;
+  data?: T;
+  error?: any;
+  refetch: () => void;
+};
+```
 
 ## Examples of use
 
@@ -80,40 +96,17 @@ You may also need to work with asynchronous information, for example requests to
 ```jsx
 // ------ In a file:
 import React, { useEffect } from 'react';
-import useGlobalState from 'react-hooks-simple-global-state';
+import { useAsyncGlobalState } from 'react-hooks-simple-global-state';
 
-const initUserData = {
-  loading: true,
-  user: null,
-  error: null,
-  refetch: () => undefined
-};
-
-const useUser = () => {
-  const [userData, setUserData] = useGlobalState('userData', initUserData);
-
-  useEffect(() => {
-    if (userData.initialized) return;
-    userData.initialized = true;
-
-    const newUserData = {
-      ...initUserData,
-      loading: false,
-      refetch: () => setUserData({ ...initUserData, initialized: false })
-    };
-    fetch('https://.../users/1')
-      .then((response) => response.json())
-      .then((user) => setUserData({ ...newUserData, user }))
-      .catch((error) => setUserData({ ...newUserData, error }));
-  }, [userData.initialized]);
-
-  return userData;
-};
+const useUser = () => useAsyncGlobalState('user', () => (
+  fetch('https://.../users/1')
+    .then((response) => response.json())
+));
 
 // ------ In any other file:
 const MyComponent = () => {
   const {
-    user, loading, error, refetch
+    data: user, loading, error, refetch
   } = useUser();
 
   if (loading) return 'Loading...';

@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 
-type Value<T> = T | undefined;
-
-type ValueOrFunc<T> = Value<T> | ((currentValue: Value<T>) => Value<T>);
+type ValueOrFunc<T> = T | ((currentValue: T) => T);
 
 type FuncSetValue<T> = (newValueOrFunc: ValueOrFunc<T>) => void;
 
 type FuncStateListener = (f: ((v: boolean) => boolean)) => void;
 
 interface State<T> {
-  value: Value<T>;
+  value: T;
   statesListening: Set<(FuncStateListener)>;
   set: FuncSetValue<T>;
 }
@@ -24,15 +22,15 @@ const funcToggleValue = (v: boolean) => !v;
 
 export const useGlobalState = <T>(
   stateName: string,
-  initValue?: Value<T>,
+  initValue?: T,
   listening = true,
-): [Value<T>, FuncSetValue<T>] => {
+): [currentValue: T, setValue: FuncSetValue<T>] => {
   const [, setToggleState] = useState(false);
   let state: State<T> = globalState[stateName];
 
   if (!state) {
     state = {
-      value: initValue,
+      value: initValue as T,
       statesListening: new Set<FuncStateListener>(),
       set(newValue: ValueOrFunc<T>): void {
         // I'm not sending the value directly to each state as this generates unnecessary rendering.
@@ -59,3 +57,43 @@ export const useGlobalState = <T>(
 };
 
 export default useGlobalState;
+
+interface AsyncData<T> {
+  loading: boolean,
+  data?: T,
+  error?: any,
+  refetch: () => void,
+}
+
+interface InternalAsyncData<T> extends AsyncData<T> {
+  initialized?: boolean,
+}
+
+const getInitAsyncData = <T>(): InternalAsyncData<T> => ({
+  loading: true,
+  refetch: () => {},
+});
+
+export const useAsyncGlobalState = <T>(
+  stateName: string,
+  funcLoadAsyncData?: () => Promise<T>,
+): AsyncData<T> => {
+  const [asyncData, setAsyncData] = useGlobalState(`async_${stateName}`, getInitAsyncData<T>());
+
+  useEffect(() => {
+    if (asyncData.initialized || !funcLoadAsyncData) return;
+    asyncData.initialized = true;
+
+    const newAsyncData = {
+      loading: false,
+      initialized: true,
+      refetch: () => setAsyncData(getInitAsyncData()),
+    };
+    funcLoadAsyncData()
+      .then((data) => setAsyncData({ ...newAsyncData, data }))
+      .catch((error) => setAsyncData({ ...newAsyncData, error }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [asyncData.initialized]);
+
+  return asyncData;
+};
