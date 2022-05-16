@@ -44,6 +44,10 @@ const useAsyncGlobalState = <T>(
 };
 ```
 
+Here, instead of an initial value, we pass an async function to generate the data. Note that this parameter is optional as we may want to use state only. And note that unlike `initValue`, here you don't need to have `funcLoadAsyncData` right on the first call, but it follows the same logic of using only the first place you call with this parameter. That way, if nobody passes this parameter, the state will be loading forever.
+
+The biggest differentiator here with respect to `setGlobalState` is the return format, because here we are targeting more the asynchronous execution pattern.
+
 ## Examples of use
 
 You can use it in the simplest and most direct way:
@@ -104,7 +108,7 @@ const useUser = () => useAsyncGlobalState('user', () => (
 ));
 
 // ------ In any other file:
-const MyComponent = () => {
+const MyComponent1 = () => {
   const {
     data: user, loading, error, refetch
   } = useUser();
@@ -118,5 +122,13 @@ const MyComponent = () => {
       <button onClick={refetch}>reload</button>
     </>
   );
+};
+
+// ------ In any other file:
+const MyComponent2 = () => {
+  const {
+    data: user, loading, error, refetch
+  } = useAsyncGlobalState('user');
+  // ...
 };
 ```
