@@ -2,21 +2,21 @@
   "name": "react-hooks-simple-global-state",
   "version": "1.1.0",
   "description": "Simple global state for React with Hooks, which just depends on React's useEffect and useState.",
-	"author": {
-		"name": "Ayrton Everton",
-		"email": "ayrtoneverton@gmail.com",
-		"url": "https://github.com/ayrtoneverton"
-	},
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/ayrtoneverton/react-hooks-simple-global-state.git"
-	},
-	"bugs": {
-		"url": "https://github.com/ayrtoneverton/react-hooks-simple-global-state/issues",
-		"email": "ayrtoneverton@gmail.com"
-	},
-	"homepage": "https://github.com/ayrtoneverton/react-hooks-simple-global-state#readme",
+  "author": {
+    "name": "Ayrton Everton",
+    "email": "ayrtoneverton@gmail.com",
+    "url": "https://github.com/ayrtoneverton"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ayrtoneverton/react-hooks-simple-global-state.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ayrtoneverton/react-hooks-simple-global-state/issues",
+    "email": "ayrtoneverton@gmail.com"
+  },
+  "homepage": "https://github.com/ayrtoneverton/react-hooks-simple-global-state#readme",
   "keywords": [
     "react",
     "hooks",
@@ -29,11 +29,15 @@
     "hooks-api-react"
   ],
   "scripts": {
-    "build": "npx tsc",
     "lint": "eslint . --ext .ts",
+    "jest": "jest",
+    "test": "npm run lint && npm run jest",
+    "build": "npx tsc",
     "publish": "npm run build && npm publish"
   },
   "devDependencies": {
+    "@testing-library/react": "^13.2.0",
+    "@types/jest": "^27.5.1",
     "@types/react": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
@@ -44,7 +48,11 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
-    "react": "^18.0.0",
+    "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0",
+    "react": "^18.1.0",
+    "ts-jest": "^28.0.2",
+    "ts-node": "^10.7.0",
     "typescript": "^4.6.3"
   },
   "peerDependencies": {
