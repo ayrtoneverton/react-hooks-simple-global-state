@@ -2,6 +2,7 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
+  modulePathIgnorePatterns: ['utils.ts'],
   testEnvironment: 'jsdom',
   coverageThreshold: {
     global: {
