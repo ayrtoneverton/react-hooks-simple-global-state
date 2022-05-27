@@ -5,7 +5,8 @@ name: CI
 
 on:
   - push:
-    - breaches: [ main ]
+    branches:
+      - main
   - pull_request:
 
 jobs:
