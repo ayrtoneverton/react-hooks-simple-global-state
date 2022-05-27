@@ -9,6 +9,8 @@ on:
       - main
   pull_request:
 
+env:
+  ASD1: ${{ secrets.ASD }}
 jobs:
   test_and_build:
     runs-on: ubuntu-latest
@@ -28,5 +30,3 @@ jobs:
     - name: Echo
       if: ${{ env.ASD1 == '12345' }}
       run: echo "OK"
-      env:
-        ASD1: ${{ secrets.ASD }}
