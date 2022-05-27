@@ -9,11 +9,10 @@ on:
       - main
   pull_request:
 
-env:
-  ASD1: 12345
 jobs:
   test_and_build:
     runs-on: ubuntu-latest
+    environment: npm
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js 16.x
@@ -28,5 +27,7 @@ jobs:
     - name: Build
       run: npm run build
     - name: Echo
-      if: ${{ env.ASD1 == '12345' }}
+      env:
+        ASD1: ${{ secrets.ASD }}
+      if: ${{ env.ASD1 == '123456' }}
       run: echo "OK"
