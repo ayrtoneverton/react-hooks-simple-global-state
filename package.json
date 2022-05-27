@@ -29,7 +29,7 @@
     "hooks-api-react"
   ],
   "scripts": {
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint . --ext .ts,.tsx",
     "jest": "jest --coverage",
     "test": "npm run lint && npm run jest",
     "build": "npx tsc",
