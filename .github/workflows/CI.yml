@@ -10,7 +10,7 @@ on:
   pull_request:
 
 env:
-  ASD1: ${{ secrets.ASD }}
+  ASD1: 12345
 jobs:
   test_and_build:
     runs-on: ubuntu-latest
