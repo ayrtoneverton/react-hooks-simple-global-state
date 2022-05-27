@@ -26,4 +26,6 @@ jobs:
     - name: Build
       run: npm run build
     - name: Echo
-      run: echo ${{ secrets.ASD }}
+      run: echo "-.$ASD1.-"
+      env:
+        ASD1: ${{ secrets.ASD }}
