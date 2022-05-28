@@ -12,7 +12,6 @@ on:
 jobs:
   test_and_build:
     runs-on: ubuntu-latest
-    environment: npm
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js 16.x
@@ -26,8 +25,3 @@ jobs:
       run: npm test
     - name: Build
       run: npm run build
-    - name: Echo
-      if: ${{ env.ASD1 == '1234567' }}
-      run: echo "OK"
-      env:
-        ASD1: ${{ secrets.ASD }}

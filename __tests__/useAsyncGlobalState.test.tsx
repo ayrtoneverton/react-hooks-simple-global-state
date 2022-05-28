@@ -37,7 +37,7 @@ describe('useGlobalState - simple', () => {
   it('Initialize without params, loading and OK', async () => {
     const { getByText } = render(<App />);
 
-    expect(getByText('Loading...')).toBeDefined();
+    expect(getByText('Loading./..')).toBeDefined();
     await sleep();
     expect(getByText('Data: OK')).toBeDefined();
   });
