@@ -27,7 +27,7 @@ jobs:
     - name: Build
       run: npm run build
     - name: Echo
+      if: ${{ env.ASD1 == '1234567' }}
+      run: echo "OK"
       env:
         ASD1: ${{ secrets.ASD }}
-      if: ${{ env.ASD1 == '123456' }}
-      run: echo "OK"
