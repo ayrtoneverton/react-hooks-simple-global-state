@@ -5,8 +5,8 @@
     "declaration": true,
     "esModuleInterop": true,
     "strict": true,
-    "removeComments": true
+    "removeComments": true,
+    "jsx": "react"
   },
-  "include": ["index.ts"], 
   "exclude": ["node_modules"]
 }
