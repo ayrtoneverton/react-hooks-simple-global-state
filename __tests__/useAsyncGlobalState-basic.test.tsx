@@ -33,7 +33,7 @@ const App = (props: ComponentProps) => (
   </StrictMode>
 );
 
-describe('useGlobalState - simple', () => {
+describe('useAsyncGlobalState - basic', () => {
   it('Initialize without params, loading and OK', async () => {
     const { getByText } = render(<App />);
 

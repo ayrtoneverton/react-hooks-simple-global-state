@@ -32,7 +32,7 @@ const App = (props: ComponentProps) => (
   </StrictMode>
 );
 
-describe('useGlobalState - simple', () => {
+describe('useGlobalState - basic', () => {
   it('Initialize without params', () => {
     expect(render(<App />)
       .getByText('Value: undefined')).toBeDefined();

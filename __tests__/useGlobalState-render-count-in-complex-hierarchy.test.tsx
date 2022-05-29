@@ -23,14 +23,7 @@ const Component = ({
   renderCount[id] = count;
 
   return (
-    <div
-      id={`id-${id}`}
-      style={{
-        border: 'solid 1px #000',
-        margin: 6,
-        padding: 8,
-      }}
-    >
+    <div id={`id-${id}`}>
       {`${id} ${stateName}: ${value} `}
       <button type="button" className="increment" onClick={() => setValue(valueToSet ?? ((oldValue) => oldValue + 1))}>
         Increment
@@ -79,7 +72,7 @@ describe('useGlobalState - render count in complex hierarchy', () => {
 
   it('Change State_B once', () => {
     const { getAllByText } = renderApp();
-    click('#id-1-2-2- .increment');
+    click('#id-1-2-2- > .increment');
 
     expect(getAllByText(/renderCount: 2,/).length).toBe(7);
     expect(getAllByText(/State_A: 0/).length).toBe(5);
@@ -90,7 +83,7 @@ describe('useGlobalState - render count in complex hierarchy', () => {
 
   it('Change State_B three times', () => {
     const { getAllByText } = renderApp();
-    click('#id-2- .increment', 3);
+    click('#id-2- > .increment', 3);
 
     expect(getAllByText(/renderCount: 2,/).length).toBe(7);
     expect(getAllByText(/State_A: 0/).length).toBe(5);
@@ -101,8 +94,8 @@ describe('useGlobalState - render count in complex hierarchy', () => {
 
   it('Change State_B three times and State_A once', () => {
     const { getAllByText } = renderApp();
-    click('#id-2- .increment', 3);
-    click('#id-1- .increment');
+    click('#id-2- > .increment', 3);
+    click('#id-1- > .increment');
 
     expect(getAllByText(/renderCount: 2,/).length).toBe(3);
     expect(getAllByText(/State_A: 0/).length).toBe(1);
@@ -115,9 +108,9 @@ describe('useGlobalState - render count in complex hierarchy', () => {
 
   it('Change State_B three times and State_A twice', () => {
     const { getAllByText } = renderApp();
-    click('#id-2- .increment', 3);
-    click('#id-1- .increment');
-    click('#id-1-1-2- .increment');
+    click('#id-2- > .increment', 3);
+    click('#id-1- > .increment');
+    click('#id-1-1-2- > .increment');
 
     expect(getAllByText(/renderCount: 2,/).length).toBe(3);
     expect(getAllByText(/State_A: 1/).length).toBe(1);
@@ -130,10 +123,10 @@ describe('useGlobalState - render count in complex hierarchy', () => {
 
   it('Change State_B three times and State_A twice and update a single Component', () => {
     const { getAllByText } = renderApp();
-    click('#id-2- .increment', 3);
-    click('#id-1- .increment');
-    click('#id-1-1-2- .increment');
-    click('#id-1-2-1- .update');
+    click('#id-2- > .increment', 3);
+    click('#id-1- > .increment');
+    click('#id-1-1-2- > .increment');
+    click('#id-1-2-1- > .update');
 
     expect(getAllByText(/renderCount: 2,/).length).toBe(2);
     expect(getAllByText(/renderCount: 4,/).length).toBe(1);
@@ -147,7 +140,7 @@ describe('useGlobalState - render count in complex hierarchy', () => {
 
   it('Change it to the same value and don\'t render any components', () => {
     const { getAllByText } = renderApp();
-    click('#id-2-2- .increment');
+    click('#id-2-2- > .increment');
 
     expect(getAllByText(/renderCount: 2,/).length).toBe(10);
     expect(getAllByText(/State_A: 5/).length).toBe(5);
