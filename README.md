@@ -46,7 +46,7 @@ const useAsyncGlobalState = <T>(
 
 Here, instead of an initial value, we pass an async function to generate the data. Note that this parameter is optional as we may want to use state only. And note that unlike `initValue`, here you don't need to have `funcLoadAsyncData` right on the first call, but it follows the same logic of using only the first place you call with this parameter. That way, if nobody passes this parameter, the state will be loading forever.
 
-The biggest differentiator here with respect to `setGlobalState` is the return format, because here we are targeting more the asynchronous execution pattern.
+The biggest differentiator here with respect to `useGlobalState` is the return format, because here we are targeting more the asynchronous execution pattern.
 
 ## Examples of use
 
@@ -96,7 +96,7 @@ const TabNavigation = ({ initTab }) => {
 };
 ```
 
-You may also need to work with asynchronous information, for example requests to an API:
+You may also need to work with `asynchronous information`, for example `requests to an API`:
 ```jsx
 // ------ In a file:
 import React, { useEffect } from 'react';
@@ -132,3 +132,59 @@ const MyComponent2 = () => {
   // ...
 };
 ```
+
+If you want to use `actions`(`dispatchers`), you can do for example like this:
+```jsx
+// ...
+const useDispatch = () => {
+  const [count, setCount] = useGlobalState('count', 0, false);
+  const actions = {
+    COUNT_DECREMENT: (value = 1) => setCount(count - value),
+    COUNT_INCREMENT: (value = 1) => setCount(count + value)
+  };
+
+  return (actionName, ...args) => actions[actionName]?.(...args);
+};
+
+const MyComponent = () => {
+  const dispatch = useDispatch();
+  const [count] = useGlobalState('count');
+
+  return (
+    <>
+      {`count: ${count} `}
+      <button onClick={() => dispatch('COUNT_DECREMENT', 2)}>-2</button>
+      <button onClick={() => dispatch('COUNT_INCREMENT')}>+1</button>
+    </>
+  );
+};
+```
+
+You can create an `observer`(`subscribe`) component as follows:
+```jsx
+// ...
+const CountObserver = () => {
+  const [count] = useGlobalState('count');
+
+  console.log(`Current count value: ${count}`);
+
+  return null;
+};
+
+// And you can add it anywhere on the tree.
+const App = () => (
+  <>
+    // ...
+    <CountObserver />
+    // ...
+  </>
+);
+```
+
+### Practical examples
+
+- [useGlobalState - simple](https://codesandbox.io/s/react-hooks-simple-global-state-use-state-simple-by7ts0?file=/src/App.js)
+- [useGlobalState - advanced](https://codesandbox.io/s/react-hooks-simple-global-state-use-async-advanced-ny79nm?file=/src/App.js)
+- [useAsyncGlobalState](https://codesandbox.io/s/react-hooks-simple-global-state-use-async-c221kn?file=/src/App.js)
+- [Actions/Dispatchers](https://codesandbox.io/s/react-hooks-simple-global-state-actions-ujkdyy?file=/src/App.js)
+- [Subscribe/Observer](https://codesandbox.io/s/react-hooks-simple-global-state-subscribe-yqi14n?file=/src/App.js)
