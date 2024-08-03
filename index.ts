@@ -4,11 +4,11 @@ type ValueOrFunc<T> = T | ((currentValue: T) => T);
 
 type FuncSetValue<T> = (newValueOrFunc: ValueOrFunc<T>) => void;
 
-type FuncStateListener = (f: ((v: boolean) => boolean)) => void;
+type FuncStateListener = (f: (v: number) => number) => void;
 
 interface State<T> {
   value: T;
-  statesListening: Set<(FuncStateListener)>;
+  statesListening: Set<FuncStateListener>;
   set: FuncSetValue<T>;
 }
 
@@ -18,14 +18,14 @@ interface GlobalState {
 
 const globalState: GlobalState = {};
 
-const funcToggleValue = (v: boolean) => !v;
+const rerender = (v: number) => (v % 999) + 1;
 
 export const useGlobalState = <T>(
   stateName: string,
   initValue?: T,
   listening = true,
 ): [currentValue: T, setValue: FuncSetValue<T>] => {
-  const [, setToggleState] = useState(false);
+  const [, setCurrentState] = useState(0);
   let state: State<T> = globalState[stateName];
 
   if (!state) {
@@ -33,24 +33,23 @@ export const useGlobalState = <T>(
       value: initValue as T,
       statesListening: new Set<FuncStateListener>(),
       set(newValue: ValueOrFunc<T>): void {
-        // I'm not sending the value directly to each state as this generates unnecessary rendering.
         const oldValue = state.value;
         state.value = newValue instanceof Function ? newValue(oldValue) : newValue;
 
         if (state.value !== oldValue) {
-          state.statesListening.forEach((setState) => setState(funcToggleValue));
+          state.statesListening.forEach((setState) => setState(rerender));
         }
       },
     };
     globalState[stateName] = state;
   }
 
-  if (listening) state.statesListening.add(setToggleState);
-
   useEffect(() => {
-    if (listening) state.statesListening.add(setToggleState);
+    if (listening) state.statesListening.add(setCurrentState);
 
-    return () => { state.statesListening.delete(setToggleState); };
+    return () => {
+      state.statesListening.delete(setCurrentState);
+    };
   }, [state.statesListening, listening]);
 
   return [state.value, state.set];
@@ -59,14 +58,14 @@ export const useGlobalState = <T>(
 export default useGlobalState;
 
 interface AsyncData<T> {
-  loading: boolean,
-  data?: T,
-  error?: any,
-  refetch: () => void,
+  loading: boolean;
+  data?: T;
+  error?: any;
+  refetch: () => void;
 }
 
 interface InternalAsyncData<T> extends AsyncData<T> {
-  initialized?: boolean,
+  initialized?: boolean;
 }
 
 const getInitAsyncData = <T>(): InternalAsyncData<T> => ({
@@ -92,7 +91,6 @@ export const useAsyncGlobalState = <T>(
     funcLoadAsyncData()
       .then((data) => setAsyncData({ ...newAsyncData, data }))
       .catch((error) => setAsyncData({ ...newAsyncData, error }));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asyncData.initialized]);
 
   return asyncData;

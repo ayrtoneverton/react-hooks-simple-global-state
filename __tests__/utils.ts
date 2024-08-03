@@ -9,7 +9,7 @@ export const click = (selector: string, clickCount = 1, element: HTMLElement = d
   }
 };
 
-export const sleep = (ms = 20): Promise<void> => act(() => new Promise((resolve) => {
+export const sleep = (ms = 20) => act(() => new Promise<void>((resolve) => {
   setTimeout(resolve, ms);
 }));
 
